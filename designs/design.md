@@ -89,23 +89,23 @@ CREATE TABLE telemetry_metrics (
     time TIMESTAMPTZ NOT NULL,
     entity_type VARCHAR(32) NOT NULL, -- 'cdu', 'cabinet_pdu', 'tray', 'gpu'
     entity_id VARCHAR(128) NOT NULL,
-    
+
     -- Thermal & Cooling Metrics
     temp_celsius NUMERIC(5,2),
     cdu_supply_temp_c NUMERIC(5,2),
     cdu_return_temp_c NUMERIC(5,2),
     coolant_flow_lpm NUMERIC(6,2),
-    
+
     -- Power Metrics
     power_watts NUMERIC(8,2),
-    
+
     -- Memory & Cache Metrics (vLLM / Hardware)
     vram_used_gb NUMERIC(6,2),
     vram_capacity_gb NUMERIC(6,2),
     kv_cache_usage_perc NUMERIC(4,3),
     num_requests_waiting INT,
     active_models TEXT[],
-    
+
     CONSTRAINT pk_telemetry PRIMARY KEY (time, entity_id)
 );
 
