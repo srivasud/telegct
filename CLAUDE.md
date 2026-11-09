@@ -63,9 +63,16 @@ Grafana observability dashboards, Phase 1b the spatial heatmap API, and Phase 2 
 ## Language
 
 - **Python 3.12 is the default** for collectors, the API and scripts.
-- Go is allowed only for a whole module that needs it: gRPC/gNMI streaming, very large or
-  sub-minute fleets, or static node agents. See plan §1. Go modules emit the same contract and
-  reuse `collector/libs/go`. Ask before starting a Go module.
+- **Go is the approved language for high-speed modules** (owner decision, 2026-11-08), on both
+  sides of the pipeline: **data ingestion** (gRPC/gNMI streaming, very large or sub-minute
+  fleets such as the Phase-2 vLLM feed, static node agents) and **data query** (high-throughput
+  read paths such as the heatmap/scheduler query service, if Python/FastAPI becomes the
+  bottleneck). Everything else stays Python.
+- Go rules: a Go module is entirely Go (no mixing within a module). Ingestion modules emit the
+  same data contract (`MetricSample` semantics, same tables, append-only inserts) and reuse
+  `collector/libs/go`. Query modules use the same API contract as `api/`. Use a profiled
+  bottleneck or a clear streaming/fleet-scale need to justify each new Go module, and note the
+  reason in the plan. Starting one still needs a task in `designs/collector_plan.md` §5.
 
 ## Commands
 

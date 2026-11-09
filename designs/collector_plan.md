@@ -35,8 +35,19 @@ streaming; (2) a large fleet at sub-minute cadence, which is likely for the Phas
 scheduler's vLLM feed at 10–30 s; (3) a node-local static-binary agent; (4) the best library
 only exists in Go.
 
+**Owner decision (2026-11-08): Go is the approved language for high-speed modules, for both
+data ingestion and data query.** Python remains the default; Go is used per module where speed
+or scale needs it:
+- *Ingestion:* streaming (gRPC/gNMI), very large or sub-minute fleets (e.g. the Phase-2 vLLM
+  feed at 10–30 s), node-local agents.
+- *Query:* high-throughput read paths (e.g. a heatmap/scheduler query service over the `*_latest`
+  views and caggs) if the Python FastAPI service becomes the bottleneck. It keeps the same API
+  contract as `api/`.
+
 Go modules are whole modules (never mixed with Python), emit the same `MetricSample` contract,
 insert into the same tables, and reuse `collector/libs/go` (seeded from the old code, §2).
+Each new Go module is added as a task in §5 with its justification (profiling result or scale
+need).
 
 ---
 

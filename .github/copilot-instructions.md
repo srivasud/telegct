@@ -5,7 +5,8 @@ before making non-trivial changes. Summary:
 
 - **Stack:** Python 3.12, asyncio, httpx, pysnmp 7, asyncpg, pydantic v2, structlog, uv
   workspace in `collector/`, PostgreSQL/TimescaleDB, FastAPI in `api/`. Go only for approved
-  whole modules (gRPC/gNMI streaming, very large fleets, static node agents).
+  whole modules for high-speed data ingestion (gRPC/gNMI streaming, very large or sub-minute
+  fleets, static node agents) and high-throughput data query paths (approved by the owner).
 - **Layout:** `collector/libs/python/telegct_common` holds the shared code
   (`protocols/` = transport, `sources/` = protocol semantics, plus `runner`, `sinks`,
   `models`). Each `collector/<module>/` has its own `Dockerfile`, `config.example.yaml`,
